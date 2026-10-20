@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Winkelmesser</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #000; color: #fff; }
+    body { display: grid; place-items: center; font: bold min(38vw, 75vh) Arial, sans-serif; }
+    #winkel { white-space: nowrap; }
+  </style>
+</head>
+<body>
+  <div id="winkel">–°</div>
+  <script>
+    const anzeige = document.getElementById('winkel');
+    let bewegungErkannt = false;
+
+    // Im Querformat misst die lange Handykante die Neigung zur Waagerechten.
+    window.addEventListener('devicemotion', (event) => {
+      const a = event.accelerationIncludingGravity;
+      if (!a || a.y == null || a.x == null || a.z == null) return;
+      const g = Math.hypot(a.x, a.y, a.z);
+      if (g < 1) return;
+      bewegungErkannt = true;
+      const winkel = Math.asin(Math.min(1, Math.abs(a.y) / g)) * 180 / Math.PI;
+      anzeige.textContent = Math.round(winkel) + '°';
+    });
+
+    // Fallback für Browser ohne Bewegungssensor-Ereignis.
+    window.addEventListener('deviceorientation', (event) => {
+      if (bewegungErkannt || event.beta == null) return;
+      let winkel = Math.abs(event.beta) % 180;
+      if (winkel > 90) winkel = 180 - winkel;
+      anzeige.textContent = Math.round(winkel) + '°';
+    });
+  </script>
+</body>
+</html>
