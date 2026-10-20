@@ -19,24 +19,29 @@
       -webkit-user-select: none;
       user-select: none;
     }
+    /* Optimiert für den kleinen Handybildschirm, besonders im Querformat. */
     .anzeige {
-      width: 100%;
-      padding: 0 clamp(16px, 4vw, 64px);
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      display: flex;
       align-items: center;
-      column-gap: clamp(12px, 3vw, 35px);
+      justify-content: center;
+      width: 100%;
+      max-width: 100vw;
+      gap: clamp(8px, 2vw, 20px);
+      padding-left: max(8px, env(safe-area-inset-left));
+      padding-right: max(8px, env(safe-area-inset-right));
     }
     .linie {
+      display: block;
+      flex: 0 0 20vw;
+      width: 20vw;
       height: 2px;
-      width: min(100%, 220px);
-      background: #fff;
-      border-radius: 999px;
+      min-height: 2px;
+      background-color: #ffffff;
+      border-radius: 2px;
     }
-    .linie.links { justify-self: end; }
-    .linie.rechts { justify-self: start; }
     #winkel {
-      font-size: clamp(58px, 17vw, 178px);
+      flex: 0 0 auto;
+      font-size: min(17vw, 42svh, 162px);
       font-weight: 700;
       line-height: 1;
       letter-spacing: -0.055em;
